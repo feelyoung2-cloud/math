@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny for unlisted documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // Student sessions for elementary school students (anonymous nickname based access)
+    match /students/{studentKey} {
+      allow read: if isValidId(studentKey);
+      allow create, update: if isValidId(studentKey)
+        && request.resource.data.studentName is string
+        && request.resource.data.studentName.size() <= 40
+        && request.resource.data.currentStage is number
+        && request.resource.data.completed is bool
+        && request.resource.data.hintsUsed is number;
+      allow delete: if isValidId(studentKey);
+    }
+
+    // Escape room settings (time limit, max hints, teacher password hash)
+    match /settings/{settingId} {
+      allow read: if isValidId(settingId);
+      allow write: if isValidId(settingId);
+    }
+
+    // Test connectivity collection for verification (create -> read -> update -> delete)
+    match /test/{testId} {
+      allow read, write, delete: if isValidId(testId);
+    }
+  }
+}

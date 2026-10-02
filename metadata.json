@@ -1,0 +1,6 @@
+{
+  "name": "소수 탐정 방탈출 - 초등 4학년 수학",
+  "description": "초등학교 4학년 소수의 덧셈과 뺄셈을 학습하는 인터랙티브 명탐정 방탈출 게임. 실시간 교사 대시보드와 AI 힌트 요정 탑재.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

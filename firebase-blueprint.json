@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Student session and escape room game progress",
+      "type": "object",
+      "properties": {
+        "studentKey": {
+          "type": "string",
+          "description": "Unique key or sanitized nickname identifier",
+          "maxLength": 64
+        },
+        "studentName": {
+          "type": "string",
+          "description": "Student display name or nickname",
+          "maxLength": 30
+        },
+        "currentStage": {
+          "type": "number",
+          "description": "Current stage index from 1 to 6"
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether the student has escaped all rooms"
+        },
+        "hintsUsed": {
+          "type": "number",
+          "description": "Total number of AI hints consumed"
+        },
+        "remainingSeconds": {
+          "type": "number",
+          "description": "Remaining game time in seconds"
+        },
+        "totalTimeSpentSeconds": {
+          "type": "number",
+          "description": "Total elapsed time in seconds"
+        },
+        "startedAt": {
+          "type": "string",
+          "description": "ISO timestamp when the game started",
+          "maxLength": 40
+        },
+        "lastActiveAt": {
+          "type": "string",
+          "description": "ISO timestamp of last activity",
+          "maxLength": 40
+        },
+        "stageHistory": {
+          "type": "string",
+          "description": "Serialized JSON of completed stages and timestamps",
+          "maxLength": 2048
+        }
+      },
+      "required": ["studentKey", "studentName", "currentStage", "completed", "hintsUsed"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Teacher configuration and administrator credentials",
+      "type": "object",
+      "properties": {
+        "timeLimitMinutes": {
+          "type": "number",
+          "description": "Game time limit in minutes"
+        },
+        "maxHints": {
+          "type": "number",
+          "description": "Maximum hints allowed per student"
+        },
+        "adminPasswordHash": {
+          "type": "string",
+          "description": "SHA-256 hash of teacher password",
+          "maxLength": 128
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last setting change",
+          "maxLength": 40
+        }
+      },
+      "required": ["timeLimitMinutes", "maxHints"]
+    },
+    "TestConnection": {
+      "title": "TestConnection",
+      "description": "Temporary document used to verify Firestore read/write/delete permissions",
+      "type": "object",
+      "properties": {
+        "testId": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "status": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "timestamp": {
+          "type": "number"
+        }
+      },
+      "required": ["status"]
+    }
+  },
+  "firestore": {
+    "/students/{studentKey}": {
+      "schema": "Student",
+      "description": "Collection of student escape room progress documents"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Collection of application settings"
+    },
+    "/test/{testId}": {
+      "schema": "TestConnection",
+      "description": "Collection for connectivity tests"
+    }
+  }
+}
